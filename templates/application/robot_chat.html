@@ -1,0 +1,102 @@
+<style>
+.li_left_chat {float: left;width: 100%;margin-bottom: 10px;}
+.li_right_chat {float: right;width: 100%;margin-bottom: 10px;}
+.left_chat{width: 70%;margin:4px 0 0 26px;text-align: left;border-radius:0px 4px 4px 12px;}
+.right_chat{float: right;;margin:4px 4px 0 0;width: 70%;text-align: right;border-radius:4px 0px 12px 4px;}
+.span_left{display:inline-block;background:#F1F1F1;border-radius:0px 4px 4px 12px;padding: 2px 4px 2px 6px}
+.span_right{display:inline-block;background: #9eea6a;border-radius:4px 0px 12px 4px;padding: 2px 6px 2px 4px}
+.i_left{font-size: 24px; float: left;}
+.i_right{font-size: 24px;float: right;}
+</style>
+<script type="text/javascript">
+    if ( !"WebSocket" in window) {
+        alert("您的浏览器不支持 WebSocket!");
+    }
+    var socket = new WebSocket("ws://" + window.location.host + "/robot_chat/");
+    socket.onopen = function () {
+        console.log('WebSocket open');//成功连接上Websocket
+        socket.send('adasdasda。。。。');//发送数据到服务端
+    };
+    socket.onmessage = function (e) {
+        console.log('message: ' + e.data);//打印服务端返回的数据
+    };
+    socket.onclose=function(e){
+        // console.log(e);
+        socket.close(); //关闭TCP连接
+    };
+    if (socket.readyState == WebSocket.OPEN) socket.onopen();
+</script>
+<section class="widget post-right-item application-section" style="max-height: 572px;overflow: auto;">
+    <h4 class="post-right-title">Python长链接-机器人聊天</h4>
+    <ul class="ul_chat">
+        <li class="li_left_chat">
+            <i class="fa fa-github-alt i_left"></i>
+            <div class="left_chat">
+                <span class="span_left">这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边</span>
+            </div>
+        </li>
+        <li class="li_right_chat">
+            <i class="fa fa-user-secret i_right"></i>
+            <div class="right_chat">
+                <span class="span_right">这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边</span>
+            </div>
+        </li>
+        <li class="li_left_chat">
+            <i class="fa fa-github-alt i_left"></i>
+            <div class="left_chat">
+                <span class="span_left">这是左边这是左边这</span>
+            </div>
+        </li>
+        <li class="li_right_chat">
+            <i class="fa fa-user-secret i_right"></i>
+            <div class="right_chat">
+                <span class="span_right">边这是左边</span>
+            </div>
+        </li>
+    </ul>
+    <div>
+        <form id="chatForm">
+            <textarea style="float:left;width: 100%;height:110px;border: 1px solid #f1f1f1;border-radius: 4px;padding:0 2px"></textarea>
+        </form>
+        <button style="float:right;margin-top:-24px;background: #f1f1f1;border: none;" id="send_chat">发送(S)</button>
+    </div>
+</section>
+
+<script>
+    // websocket
+    // 右聊天信息
+    function right_text(text)
+    {
+        var str = '';
+        str += '<li class="li_right_chat">';
+        str += '<i class="fa fa-user-secret i_right"></i>';
+        str += '<div class="right_chat">';
+        str += '<span class="span_right">'+ text +'</span>';
+        str += '</div>';
+        str += '</li>';
+        $('.ul_chat').append(str);
+    }
+
+    // 左聊天信息
+    function left_text(text)
+    {
+        var str = '';
+        str += '<li class="li_left_chat">';
+        str += '<i class="fa fa-github-alt i_left"></i>';
+        str += '<div class="left_chat">';
+        str += '<span class="span_left">'+ text +'</span>';
+        str += '</div>';
+        str += '</li>';
+        $('.ul_chat').append(str);
+    }
+
+    // 聊天框发送消息
+    $('#send_chat').on('click',function(){
+        var text = $('textarea').val();
+        if (text == '') {return false;}
+        right_text(text);
+        $('textarea').val('')
+    })
+
+    
+</script>

@@ -1,0 +1,67 @@
+<section class="widget post-right-item application-section">
+    <h4 class="post-right-title">Python爬虫-百度搜索热点 <span style="float: right;font-size: 12px;"><span class='flash_time'>60s</span> 刷新</span></h4>
+    <ul class="clearfix baidu_hot_data">
+    </ul>
+</section>
+<script>
+    // 获取数据
+    function get_hot_data()
+    {
+        $.ajax({
+            cache: false,
+            type: "get",
+            url:"/baidu_hot_data",
+            data:{},
+            dateType:"json",
+            async: true,
+            success: function(data) {
+                var li_str  = '';
+                $.each(data,function(i){
+                    var newSpan = '';
+                    // 新标签
+                    if (data[i].isNew == 1) {
+                        newSpan = "<span class='c-text c-text-danger'>新</span>";
+                    }
+                    // 排前三颜色
+                    var c_index_class = '';
+                    if (i ==0 ) {
+                        c_index_class = 'c-index-hot1';
+                    } else if (i == 1) {
+                        c_index_class = 'c-index-hot2';
+                    } else if ( i == 2) {
+                        c_index_class = 'c-index-hot3';
+                    }
+                    // 上升标签
+                    var rise_text = '<span style="display:inline-block;width:18px;height:14px;"></span>';
+                    if (data[i].trend == 'rise') {
+                        rise_text = "<i class='fa fa-arrow-up' style='color:#f54545;margin-left:5px;'></i>";
+                    }
+                    // 搜索数字，99万
+                    var text_number_temp = data[i].searches.toString();
+                    var text_number = text_number_temp.substring(0, text_number_temp.length-4)+'万';
+                    // 内容
+                    li_str += "<li><span class='c-index "+c_index_class+"'>"+ (i+1)+"</span><a href='javascript:void(0);'>"+data[i].keyword+"</a>"+ newSpan + "<span style='float:right;'>"+text_number + rise_text +"</span>" +"</li>";
+                });
+                $('.baidu_hot_data').empty();
+                $('.baidu_hot_data').append(li_str);
+            },
+        });
+    }
+    get_hot_data();
+
+    var times = 60;
+    var i = 1;
+    // 时间刷新
+    function flash_time()
+    {
+        if (i >= times) {
+            times = 60;
+            get_hot_data();
+        } else {
+            times--;
+        }
+        $('.flash_time').text('');
+        $('.flash_time').text(times+'s');
+    }
+    setInterval("flash_time()", 1000);
+</script>

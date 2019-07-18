@@ -1,0 +1,115 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="x-dns-prefetch-control" content="on" />
+<meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-title" content="Jieson博客 PHP|Python|Web前端|摄影">
+<title>Jieson博客 PHP|Python|Web前端|摄影</title>
+<link rel="shortcut icon" href='{% static "picture/favicon.ico" %}'/>
+<link rel='stylesheet' id='bootstrap-css' href='{% static "css/bootstrap.min.css" %}' type='text/css' media='all'/>
+<link rel='stylesheet' id='fontawesome-css' href='{% static "css/font-awesome.min.css" %}' type='text/css' media='all'/>
+<link rel='stylesheet' id='stylesheet-css' href='{% static "css/style.css" %}' type='text/css' media='all'/>
+<link rel='stylesheet' id='raxus-css' href='{% static "css/raxus.css" %}' type='text/css' media='all'/>
+<link rel='stylesheet' id='open-social-style-css' href='{% static "css/os.css" %}' type='text/css' media='all'/>
+<meta name='robots' content='index,follow' />
+<meta name="keywords" content="Python,PHP,JS,Web前端,摄影,Linux,移动互联网">
+<meta name="description" content="记录分享个人工作所想所得！">
+<script type='text/javascript' src='{% static "js/jquery.min.js" %}'></script>
+<style>.active{color: #4987D9 !important;}</style>
+<script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?98711e3c99b2180e92a643ea402cf75a";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+        
+</head>
+
+<body class="home blog site-layout-2">
+<!-- 头部 -->
+<header class="fix-wrap" id="fix-wrap">
+    <div class="fix-main clearfix pr" id="fix-main" _hover-ignore="1"> 
+        <a href="/" class="index-logo"><img src='{% static "picture/black-logo.png" %}' alt="Jieson博客 PHP|Python|Web前端|摄影"></a>
+        <nav class="nav fl">
+            <ul id="fix-list" class="fix-list clearfix menu-list">
+                <li id="menu-item-24086" class="menu-item"><a href="/">首页</a></li>
+                {% for category in allcategory %}
+                    <li id="menu-item-117720" class="menu-item">
+                        <a href="{% url 'index' %}list-{{ category.id }}.html">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+                <li id="menu-item-24086" class="menu-item"><a href="/application/">Python应用</a></li>
+                <li id="menu-item-24086" class="menu-item"><a href="/about/">关于博主</a></li>
+            </ul>
+        </nav>
+        <form method="get" class="index-search  hidden-xs" action="{% url 'index' %}s/" >
+            <input class="text" name="search" type="text" placeholder="输入关键字" value="">
+            <button class="submit" type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+</header>
+{% block content %}
+
+{% endblock %}
+<!-- 底部 -->
+<footer class="footer">
+<div class="copyright"> © 2016- <span id='year'></span> · All Rights Reserved
+    · <a href="/" class="active">Jieson博客</a>
+</div>
+</footer>
+<script type="text/javascript" src='{% static "js/view-history.js" %}'></script>
+<script type='text/javascript' src='{% static "js/push.js" %}'></script>
+<script type='text/javascript' src='{% static "js/bootstrap.min.js" %}'></script>
+<script type='text/javascript' src='{% static "js/raxus-slider.min.js" %}'></script>
+<script type='text/javascript' src='{% static "js/loader.js" %}'></script>
+<script type='text/javascript' src='{% static "js/bj-lazy-load.min.js" %}'></script>
+<script type='text/javascript' src='{% static "js/os.js" %}'></script>
+<script>var myDate = new Date();document.getElementById('year').innerHTML = myDate.getFullYear();</script>
+<script>
+    $(function(){
+        // 评论
+        $('#btn-submit').on('click', function(){
+            var comments_input = $('.comments_input').val();
+            if (comments_input == '' || comments_input == null) {
+                alert('评论内容不能空！');return false;
+            }
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"/add_comment/",
+                data:$('.commentsForm').serialize(),
+                dateType:"json",
+                async: true,
+                beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+                success: function(data) {
+                    if(data.status == 'success'){
+                        alert("提交成功");
+                            window.location.reload();//刷新当前页面.
+                    }else if(data.status == 'fail'){
+                        alert("评论错误，请重新评论");
+                    }
+                },
+            });
+        });
+        // 记住菜单
+        var path_name = window.location.pathname;
+        $('.menu-item').each(function(index){
+            var current_url = $(this).children('a').attr('href');
+            if (path_name == current_url || $('#showPageHref').attr('href') == current_url) {
+                $(this).children('a').addClass('active');
+            } else { 
+                $(this).removeClass('active');
+            }
+        });
+    })
+</script>
+</body>
+</html>

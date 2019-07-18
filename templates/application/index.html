@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+.baidu_hot_data li{border-bottom: 1px solid #f3f3f3;line-height: 32px;}
+.width1180{width: 1180px;}.application-section{width:47%;float: left;margin-right: 30px;border-radius: 0.4em}
+.c-index {margin-right: 5px;display: inline-block;padding: 1px 0;color: #fff;width: 14px;line-height: 100%;font-size: 12px;text-align: center;background-color: #8eb9f5;}
+.c-index-hot1 {background-color: #f54545;}
+.c-index-hot2 {background-color: #ff8547;}
+.c-index-hot3 {background-color: #ffac38;}
+.c-text-danger {background-color: #f13f40;}
+.flash_time{color:#4987D9}
+.c-text {margin-left:5px;display: inline-block;padding: 2px;text-align: center;vertical-align: text-bottom;font-size: 12px;line-height: 100%;font-style: normal;font-weight: 400;color: #fff;overflow: hidden;}
+</style>
+ <div id="main-container" class="container clearfix">
+	<section class="post-left">
+        <div class="breadcrumb width1180">您的位置： <a itemprop="breadcrumb" href="/">首页</a> » <span class="current">Python应用</span>
+        </div>				
+        <div class="post-main clearfix width1180">
+			<h1 class="post-title">Python应用</h1>
+			<div class="post-con clearfix">
+                <!-- 百度热点 -->
+                {% include 'application/baidu_hot.html' %}
+                <!-- 机器人聊天 -->
+                {% include 'application/robot_chat.html' %}
+                <!-- 指定链接，爬取内容 -->
+                {% include 'application/getContentsByUrl.html' %}
+			</div>
+		</div>
+		<!-- /文章 -->
+	</section>
+</div>
+
+<!-- /主体 -->
+<!-- 底部 -->
+{% endblock %}

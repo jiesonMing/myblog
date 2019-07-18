@@ -1,0 +1,43 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+ <div id="main-container" class="container clearfix">
+	<section class="post-left">
+        <div class="breadcrumb">您的位置： <a itemprop="breadcrumb" href="/">首页</a> » <span class="current">关于我</span>
+        </div>				
+        <div class="post-main clearfix">
+			<h1 class="post-title">关于我</h1>
+			<div class="post-con clearfix">
+				<div class="article-meta"> <span class="item">2016-06-30</span></div>
+				<article class="article-content">
+                    <p>1、本人毕业于深圳信息职业技术学院，专业-移动互联应用技术，16年投身社会的怀抱。</p>
+                    <p>2、技能：PHP、Linux、JS、H5、Python、Vue/React、小程序。</p>
+                    <p>3、未曾就职国内大厂，尽在基础初创公司莫怕打滚，如：世纪众云、Loho、精英世家。</p>
+                    <p>4、项目涉及：跨境电商报关系统、跨境电商商城、SDMS(erp)系统、寻找APP、在线教育系统。</p>
+                    <p>5、业余爱好：篮球、摄影、听歌、烹饪、电影、宠物。</p>
+                    <p>6、该博客网站使用Python的Django框架搭建。</p>
+				</article>
+			</div>
+		</div>
+		<!-- /文章 -->
+	</section>
+	<!-- /post-left -->
+	<!-- /post-right -->
+    <aside class="post-right hidden-xs">
+        <!-- /关注我们 -->
+        <div class="post-right-item">
+            <h4 class="post-right-title">联系我</h4>
+            <div class="wid-about">
+                <p>Jieson博客，有事联系！</p>
+                <img src="{% url 'index' %}static/picture/weixinqr.jpg" width="160" height="160">
+            </div>
+            <div class="wid-about">
+                <p><strong>联系方式:</strong></p>
+                <p>QQ:1061133814</p>
+                <p>Email：1061133814@qq.com</p>
+            </div>
+        </div>
+    </aside>
+</div>
+<!-- /主体 -->
+<!-- 底部 -->
+{% endblock %}
