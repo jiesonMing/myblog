@@ -9,48 +9,30 @@
 .i_right{font-size: 24px;float: right;}
 </style>
 <script type="text/javascript">
-    if ( !"WebSocket" in window) {
-        alert("您的浏览器不支持 WebSocket!");
-    }
-    var socket = new WebSocket("ws://" + window.location.host + "/robot_chat/");
-    socket.onopen = function () {
-        console.log('WebSocket open');//成功连接上Websocket
-        socket.send('adasdasda。。。。');//发送数据到服务端
-    };
-    socket.onmessage = function (e) {
-        console.log('message: ' + e.data);//打印服务端返回的数据
-    };
-    socket.onclose=function(e){
-        // console.log(e);
-        socket.close(); //关闭TCP连接
-    };
-    if (socket.readyState == WebSocket.OPEN) socket.onopen();
+    // if ( !"WebSocket" in window) {
+    //     alert("您的浏览器不支持 WebSocket!");
+    // }
+    // var socket = new WebSocket("ws://" + window.location.host + "/robot_chat/");
+    // socket.onopen = function () {
+    //     console.log('WebSocket open');//成功连接上Websocket
+    //     socket.send('adasdasda。。。。');//发送数据到服务端
+    // };
+    // socket.onmessage = function (e) {
+    //     console.log('message: ' + e.data);//打印服务端返回的数据
+    // };
+    // socket.onclose=function(e){
+    //     // console.log(e);
+    //     socket.close(); //关闭TCP连接
+    // };
+    // if (socket.readyState == WebSocket.OPEN) socket.onopen();
 </script>
 <section class="widget post-right-item application-section" style="max-height: 572px;overflow: auto;">
     <h4 class="post-right-title">Python长链接-机器人聊天</h4>
-    <ul class="ul_chat">
+    <ul class="ul_chat" style="min-height: 385px !important;">
         <li class="li_left_chat">
             <i class="fa fa-github-alt i_left"></i>
             <div class="left_chat">
-                <span class="span_left">这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边</span>
-            </div>
-        </li>
-        <li class="li_right_chat">
-            <i class="fa fa-user-secret i_right"></i>
-            <div class="right_chat">
-                <span class="span_right">这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边这是左边</span>
-            </div>
-        </li>
-        <li class="li_left_chat">
-            <i class="fa fa-github-alt i_left"></i>
-            <div class="left_chat">
-                <span class="span_left">这是左边这是左边这</span>
-            </div>
-        </li>
-        <li class="li_right_chat">
-            <i class="fa fa-user-secret i_right"></i>
-            <div class="right_chat">
-                <span class="span_right">边这是左边</span>
+                <span class="span_left">您好，我是你的机器人助手。您有什么需要问的，可以在输入框输入然后点击发送！</span>
             </div>
         </li>
     </ul>
@@ -95,8 +77,30 @@
         var text = $('textarea').val();
         if (text == '') {return false;}
         right_text(text);
-        $('textarea').val('')
-    })
-
+        $('textarea').val('');
+        // 获取返回的信息
+        onmessage(text);
+    });
+    
+    // 获取信息以及返回
+    function onmessage(txt)
+    {
+        $.ajax({
+            cache: false,
+            type: "get",
+            url:"/robot_chat",
+            data:{'text':txt},
+            dateType:"json",
+            async: true,
+            success: function(data) {
+                console.log(data);
+                var msg = data.results[0].values.text;
+                left_text(msg);
+            },
+            error:function(){
+                console.log('failed');
+            }
+        });
+    }
     
 </script>

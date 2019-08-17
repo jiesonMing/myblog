@@ -1,10 +1,77 @@
+<style>
+#success{color: #41d441;}
+#failed{color: #e91e1e}
+p{padding: 1px;}
+</style>
 <section class="widget post-right-item application-section">
-        <h4 class="post-right-title">Python爬虫-指定链接，爬取内容(video/img)</h4>
-        <ul class="post-hot clearfix">
-            <li>
-                <div class="text">
-                    待开发
+    <h4 class="post-right-title">Python爬虫-指定链接，爬取内容(video/img)</h4>
+    <ul class="post-hot clearfix">
+        <li>
+            <div class="text">
+                <div>地址：<input type="text" name="request_url" placeholder="例如：www.baidu.com" style="width:446px;position: relative;top:-25px;left: 40px;"/></div>
+                <div>抓取类型：
+                    <input type="radio" name="content_type" value="1" id="video" checked/><label for="video">视频</label>   
+                    <p style="position: relative;top:-27px;left: 160px;">
+                        <input type="radio" name="content_type" value="2" id="img"/><label for="img">图片</label>
+                    </p>
                 </div>
-            </li>
-        </ul>
-    </section>
+                <div>
+                    <button style="background: #f1f1f1;border: none;padding: 4px 12px;" id="getContentsBtn">抓取</button>
+                </div>
+
+                <!-- 输出显示进度 -->
+                <div class="showPro" style="display:none;margin-top:30px;width: 484px;background: black;color: white;padding: 2px 6px;">
+                    <!-- <p id="success">成功抓取，生成了压缩包。</p>
+                    <p id='failed'>抓取失败。</p> -->
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+<script>
+    $('#getContentsBtn').click(function(){
+        var request_url = $('input[name=request_url]').val();
+        var content_type = $("input:radio[name=content_type]:checked").val();
+        if (request_url == '') {alert('地址不能为空！');return false;}
+        if (content_type == '') {alert('抓取类型不能为空！');return false;}
+
+        var t1 = setInterval(start_pro,1000);
+        $.ajax({
+            cache: false,
+            type: "get",
+            url:"/get_contents",
+            data:{'request_url':request_url, 'content_type':content_type},
+            // dateType:"json", // 数据类型，返回来的数据也必须是同类型，否则一直不进success方法
+            async: true,
+            success: function(data) {
+                // 成功的关闭输出
+                clearInterval(t1);
+                $(".showPro").append('<p id="success">成功抓取，正在压缩包。</p>');
+            },
+            error:function(){
+                console.log('failed');
+                clearInterval(t1);
+                $(".showPro").append('<p id="failed">抓取失败。</p>');
+            }
+        });
+
+        is_show();
+    });
+
+    function start_pro()
+    {
+        $(".showPro").append('<p>抓取中......</p>');
+    }
+
+    function is_show()
+    {
+        if ($(".showPro").css('display') != 'none') {
+            $(".showPro").empty();
+            $(".showPro").append('<p>抓取中......</p>');
+        } else {
+            $(".showPro").show();
+        }
+    }
+    
+
+</script>

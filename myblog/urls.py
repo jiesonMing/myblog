@@ -17,11 +17,10 @@ urlpatterns = [
     path('about/', views.about, name='about'),#联系我们单页
     path('application/', views.application, name='application'),#python应用
     path('ueditor/', include('DjangoUeditor.urls')),
-    # path('robot_chat/', views.robot_chat, name='robot_chat'),
     re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
     re_path('^add_comment/$', views.add_comment, name='add_comment'),
     re_path('^baidu_hot_data/$', views.baidu_hot_data, name='baidu_hot_data'),
-    # re_path('^robot_chat/$', views.robot_chat, name='robot_chat'),
-    url(r'^robot_chat/', views.robot_chat),
+    re_path('^robot_chat/$', views.robot_chat, name='robot_chat'),
+    re_path('^get_contents/$', views.scapy_contents, name='scapy_contents'),
 ]
 # handler404 = views.page_not_found

@@ -39,14 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',#注册APP应用
     'DjangoUeditor', #注册APP应用
-    'dwebsocket',
+    # 'channels',
 ]
-
-MIDDLEWARE_CLASSES = [
-    'dwebsocket.middleware.WebSocketMiddleware'  # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
-]
-
-WEBSOCKET_ACCEPT_ALL=True   # 可以允许每一个单独的视图实用websockets
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,6 +53,12 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'myblog.urls'
+
+# import dwebsocket
+# # 为所有的URL提供websocket，如果只是单独的视图需要可以不选
+# MIDDLEWARE_CLASSES=['dwebsocket.middleware.WebSocketMiddleware']
+
+# WEBSOCKET_ACCEPT_ALL=True  # 可以允许每一个单独的视图实用websockets
 
 TEMPLATES = [
     {
@@ -78,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'myblog.wsgi.application'
+# ASGI_APPLICATION = "myblog.routing.application"
 
 
 # Database

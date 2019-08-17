@@ -4,6 +4,10 @@ from .models import Category, Banner, Article, Tag, Link, Comments
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # 分页
 import time
 import json
+from time import sleep
+import requests
+import urllib.request
+from bs4 import BeautifulSoup
 
 # 公共函数
 def global_variable(request):
@@ -113,16 +117,66 @@ def application(request):
 
 # 百度热点数据
 def baidu_hot_data(request):
-    file_path = 'D:\\python\data.json'
-    #file_path = '/www/myblog/data/data.json'
-    fb = open(file_path, 'r')
-    dicts = json.load(fb)
-    fb.close()
-    data = json.dumps(dicts)
+    # file_path = 'D:\\python\data.json'
+    # #file_path = '/www/myblog/data/data.json'
+    # fb = open(file_path, 'r')
+    # dicts = json.load(fb)
+    # fb.close()
+    # data = json.dumps(dicts)
+    # 获取网站首页全部内容
+    cnt = 50 #只能1-50
+    time_s = round(time.time() * 1000)
+    time_s = time_s.__str__()
+    url = 'https://zhidao.baidu.com/question/api/hotword?rn='+cnt.__str__()+'&t='+time_s
+    user_agent = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'
+    req = urllib.request.Request(url, headers={'User-Agent': user_agent})
+    response = urllib.request.urlopen(req)
+    content = response.read().decode('utf-8')
+    dataList = json.loads(content)['data'][0:15]
+
+    data = json.dumps(dataList)
     return HttpResponse(data, content_type='application/json')
 
-from dwebsocket.decorators import accept_websocket
-@accept_websocket
+# 机器人聊天
 def robot_chat(request):
-    if request.is_websocket():
-        request.websocket.send('success'.encode('utf-8'))
+    text = request.GET.get('text')
+    data = {
+        "reqType":0,
+        "perception": {
+            "inputText": {
+                "text": text
+            }
+        },
+        "userInfo": {
+            "apiKey": "d1375188443743699e7d3b73f4040e2b",
+            "userId": "441c7926f4c8da1d"
+        }
+    }
+    res = requests.post("http://openapi.tuling123.com/openapi/api/v2",json=data)
+    # new_res = res.json().get("results")[0].get("values").get("text")
+    return HttpResponse(res, content_type='application/json') # 规定了返回的类型，数据就必须是规定的类型
+
+# from common.GetContensByUrl import GetContensByUrl
+import re
+# 爬虫抓取内容
+def scapy_contents(request):
+    sleep(3)
+    request_url = request.GET.get('request_url')
+    content_type = request.GET.get('content_type')
+
+    res = requests.get(request_url)
+    res.encoding = 'utf-8'
+    html = res.text
+    
+    bf = BeautifulSoup(html, 'html.parser')
+    bf.prettify()
+    texts = bf.find_all('img')
+
+
+    # 打开「detail_content」文件
+    fout = open('test.txt', 'w', encoding='utf8')
+    # 写入文件内容
+    fout.write(html)
+    #关闭文件
+    fout.close()
+    return HttpResponse(texts)
